@@ -1,0 +1,25 @@
+---
+- name: Install Docker using Ansible
+  hosts: servers
+  become: yes
+
+  tasks:
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+
+    - name: Run nginx container
+      docker_container:
+        name: nginx-server
+        image: nginx
+        state: started
+        ports:
+          - "8080:80"
